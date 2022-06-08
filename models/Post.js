@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const PostSchema = new Schema({
   title: {
     type: String,
-    required: [true, 'Please provide a title'],
+    required: [true, 'Please provide a title.'],
     minlength: [10, 'Title must be min 10 character'],
   },
   transformedTitle: {
@@ -35,6 +35,10 @@ const PostSchema = new Schema({
       ref: 'User',
     },
   ],
+  comments: [{
+    type: mongoose.Schema.ObjectId,
+    ref:'Comment'
+  }]
 });
 PostSchema.pre('save', function (next) {
   if (!this.isModified('title')) {

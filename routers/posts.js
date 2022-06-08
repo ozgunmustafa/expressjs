@@ -1,4 +1,6 @@
 const express = require('express');
+const comment = require('./comment');
+
 const {
   checkPostExist,
 } = require('../middlewares/database/databaseErrorHelpers');
@@ -32,5 +34,7 @@ router.delete(
 );
 
 router.get('/:id/like', [getAccessToRoute, checkPostExist], likePost);
+router.use('/:post_id/comments', checkPostExist, comment);
+
 
 module.exports = router;

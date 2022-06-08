@@ -72,15 +72,15 @@ const likePost = asyncErrorWrapper(async (req, res, next) => {
       success: true,
       data: post,
     });
-  } else {
-    post.likes.push(req.user.id);
-    await post.save();
-    return res.status(200).json({
-      message: 'Liked 👍',
-      success: true,
-      data: post,
-    });
   }
+  
+  post.likes.push(req.user.id);
+  await post.save();
+  return res.status(200).json({
+    message: 'Liked 👍',
+    success: true,
+    data: post,
+  });
 });
 
 module.exports = {

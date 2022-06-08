@@ -8,6 +8,7 @@ const {
 } = require('../../helpers/authorization/tokenHelpers');
 const User = require('../../models/User');
 const Post = require('../../models/Post');
+const Comment = require('../../models/Comment');
 
 const getAccessToRoute = (req, res, next) => {
   const { JWT_SECRET_KEY } = process.env;
@@ -56,8 +57,21 @@ const checkPostOwnerAccess = asyncErrorWrapper(async (req, res, next) => {
   next();
 });
 
+const checkCommentOwnerAccess = asyncErrorWrapper(async (req, res, next) => {
+  const userId = req.user.id;
+  const commentId = req.params.comment_id;
+
+  const comment = await Comment.findById(commentId);
+
+  if (comment.user != userId) {
+    return next(new CustomError('Only owner can handle this operation ', 403));
+  }
+  next();
+});
+
 module.exports = {
   getAccessToRoute,
   getAdminAccess,
   checkPostOwnerAccess,
+  checkCommentOwnerAccess,
 };
