@@ -1,6 +1,7 @@
 const User = require('../../models/User');
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
+const Category = require('../../models/Category');
 const CustomError = require('../../helpers/error/CustomError');
 const asyncErrorWrapper = require('express-async-handler');
 
@@ -14,10 +15,20 @@ const checkUserExist = asyncErrorWrapper(async (req, res, next) => {
   next();
 });
 
+const checkCategoryExist = asyncErrorWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const category = await Category.findById(id);
+  if (!category) {
+    return next(new CustomError('Category not found', 404));
+  }
+  req.data = category;
+  next();
+});
+
 const checkPostExist = asyncErrorWrapper(async (req, res, next) => {
   const postId = req.params.id || req.params.post_id;
 
-  const post = await Post.findById(postId);
+  const post = await Post.findById(postId).populate('category');
   if (!post) {
     return next(new CustomError('Post not found', 404));
   }
@@ -44,4 +55,5 @@ module.exports = {
   checkUserExist,
   checkPostExist,
   checkPostAndCommentExist,
+  checkCategoryExist,
 };

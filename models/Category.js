@@ -19,6 +19,12 @@ const CategorySchema = new Schema({
     type: Date,
     default: Date.now(),
   },
+  posts: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Post',
+    },
+  ],
 });
 
 CategorySchema.pre('save', function (next) {

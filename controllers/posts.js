@@ -16,6 +16,7 @@ const createPost = asyncErrorWrapper(async (req, res, next) => {
   const post = await Post.create({
     ...information,
     user: req.user.id,
+    category:req.body.categoryId
   });
   res.status(200).json({
     success: true,
@@ -73,7 +74,7 @@ const likePost = asyncErrorWrapper(async (req, res, next) => {
       data: post,
     });
   }
-  
+
   post.likes.push(req.user.id);
   await post.save();
   return res.status(200).json({
