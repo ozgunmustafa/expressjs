@@ -59,6 +59,12 @@ const UserSchema = new Schema({
   resetPasswordExpire: {
     type: Date,
   },
+  likes: [
+    {
+      type: mongose.Schema.ObjectId,
+      ref: 'Post',
+    },
+  ],
 });
 
 UserSchema.methods.getResetPasswordTokenFromUser = function () {

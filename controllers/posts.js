@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+const User = require('../models/User');
 const CustomError = require('../helpers/error/CustomError');
 const asyncErrorWrapper = require('express-async-handler');
 
@@ -16,7 +17,7 @@ const createPost = asyncErrorWrapper(async (req, res, next) => {
   const post = await Post.create({
     ...information,
     user: req.user.id,
-    category:req.body.categoryId
+    category: req.body.categoryId,
   });
   res.status(200).json({
     success: true,
@@ -63,11 +64,17 @@ const deletePost = asyncErrorWrapper(async (req, res, next) => {
 const likePost = asyncErrorWrapper(async (req, res, next) => {
   const { id } = req.params;
   const post = await Post.findById(id);
+  const user = await User.findById(req.user.id);
+
 
   if (post.likes.includes(req.user.id)) {
-    const index = post.likes.indexOf(req.user.id);
-    post.likes.splice(index, 1);
+    const postIndex = post.likes.indexOf(req.user.id);
+    const userIndex = user.likes.indexOf(id);
+    post.likes.splice(postIndex, 1);
+    user.likes.splice(userIndex, 1);
+
     await post.save();
+    await user.save();
     return res.status(200).json({
       message: 'Undo like',
       success: true,
@@ -76,11 +83,13 @@ const likePost = asyncErrorWrapper(async (req, res, next) => {
   }
 
   post.likes.push(req.user.id);
+  user.likes.push(id);
   await post.save();
+  await user.save();
   return res.status(200).json({
     message: 'Liked 👍',
     success: true,
-    data: post,
+    //data: post,
   });
 });
 

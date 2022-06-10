@@ -7,7 +7,7 @@ const asyncErrorWrapper = require('express-async-handler');
 
 const checkUserExist = asyncErrorWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const user = await User.findById(id);
+  const user = await User.findById(id).populate('userLikes');
   if (!user) {
     return next(new CustomError('User not found', 404));
   }
@@ -28,7 +28,10 @@ const checkCategoryExist = asyncErrorWrapper(async (req, res, next) => {
 const checkPostExist = asyncErrorWrapper(async (req, res, next) => {
   const postId = req.params.id || req.params.post_id;
 
-  const post = await Post.findById(postId).populate('category');
+  const post = await Post.findById(postId).populate('category').populate({
+    path: 'likes',
+    select: 'name profile_img',
+  });
   if (!post) {
     return next(new CustomError('Post not found', 404));
   }
