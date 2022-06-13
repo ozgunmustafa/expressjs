@@ -1,3 +1,4 @@
+const cors = require('cors');
 const express = require('express');
 
 const categories = require('./categories');
@@ -7,6 +8,7 @@ const user = require('./user');
 const admin = require('./admin');
 
 const router = express.Router();
+router.use(cors());
 router.use(express.static('public'));
 
 router.use('/categories', categories);
