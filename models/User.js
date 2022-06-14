@@ -65,6 +65,24 @@ const UserSchema = new Schema({
       ref: 'Post',
     },
   ],
+  followers: [
+    {
+      type: mongose.Schema.ObjectId,
+      ref: 'User',
+    },
+  ],
+  followingCategory: [
+    {
+      type: mongose.Schema.ObjectId,
+      ref: 'Category',
+    },
+  ],
+  followingUser: [
+    {
+      type: mongose.Schema.ObjectId,
+      ref: 'User',
+    },
+  ],
 });
 
 UserSchema.methods.getResetPasswordTokenFromUser = function () {

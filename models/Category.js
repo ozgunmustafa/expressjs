@@ -25,6 +25,12 @@ const CategorySchema = new Schema({
       ref: 'Post',
     },
   ],
+  followers: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref:'User'
+    }
+  ]
 });
 
 CategorySchema.pre('save', function (next) {

@@ -151,6 +151,37 @@ const editPersonalInfo = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
+const followUser = asyncErrorWrapper(async (req, res, next) => {
+  const userId = req.params.id; //istek yapılan kullanıcı
+  const authId = req.user.id; //isteği yapan
+
+  const user = await User.findById(userId);
+  const auth = await User.findById(authId);
+
+  if (user.followers.includes(authId)) {
+    const userIndex = user.followers.indexOf(authId);
+    const authIndex = auth.followingUser.indexOf(userId);
+
+    user.followers.splice(userIndex, 1);
+    auth.followingUser.splice(authIndex, 1);
+
+    await user.save();
+    await auth.save();
+    return res.status(200).json({
+      message: 'Unfollowed',
+      success: true,
+    });
+  }
+  user.followers.push(authId);
+  auth.followingUser.push(userId);
+  await user.save();
+  await auth.save();
+  return res.status(200).json({
+    success: true,
+    message: 'Followed 👍',
+  });
+});
+
 module.exports = {
   register,
   login,
@@ -160,4 +191,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   editPersonalInfo,
+  followUser,
 };

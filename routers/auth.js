@@ -8,6 +8,7 @@ const {
   forgotPassword,
   resetPassword,
   editPersonalInfo,
+  followUser
 } = require('../controllers/auth');
 const { getAccessToRoute } = require('../middlewares/authorization/auth');
 const profileImageUpload = require('../middlewares/libraries/profileImageUpload');
@@ -26,5 +27,7 @@ router.post(
   [getAccessToRoute, profileImageUpload.single('profile_img')],
   imageUpload,
 );
+router.get('/:id/follow', [getAccessToRoute], followUser);
+
 
 module.exports = router;
