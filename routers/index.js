@@ -8,7 +8,7 @@ const user = require('./user');
 const admin = require('./admin');
 
 const router = express.Router();
-router.use(cors());
+router.use(cors({ credentials: 'same-origin' }));
 router.use(express.static('public'));
 
 router.use('/categories', categories);

@@ -8,13 +8,16 @@ const {
   forgotPassword,
   resetPassword,
   editPersonalInfo,
-  followUser
+  followUser,
 } = require('../controllers/auth');
 const { getAccessToRoute } = require('../middlewares/authorization/auth');
+const {
+  checkCategoryExist,
+} = require('../middlewares/database/databaseErrorHelpers');
 const profileImageUpload = require('../middlewares/libraries/profileImageUpload');
 
 const router = express.Router();
-
+router.get('/:user_id/follow', getAccessToRoute, followUser);
 router.post('/register', register);
 router.post('/login', login);
 router.get('/logout', getAccessToRoute, logout);
@@ -27,7 +30,5 @@ router.post(
   [getAccessToRoute, profileImageUpload.single('profile_img')],
   imageUpload,
 );
-router.get('/:id/follow', [getAccessToRoute], followUser);
-
 
 module.exports = router;

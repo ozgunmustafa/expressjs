@@ -7,6 +7,7 @@ const {
   followCategory,
 } = require('../controllers/categories');
 const { getAccessToRoute } = require('../middlewares/authorization/auth');
+
 const {
   checkCategoryExist,
 } = require('../middlewares/database/databaseErrorHelpers');

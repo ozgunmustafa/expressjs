@@ -2,7 +2,6 @@ const Category = require('../models/Category');
 const CustomError = require('../helpers/error/CustomError');
 const asyncErrorWrapper = require('express-async-handler');
 const User = require('../models/User');
-
 const createCategory = asyncErrorWrapper(async (req, res, next) => {
   const formData = req.body;
   const category = await Category.create({

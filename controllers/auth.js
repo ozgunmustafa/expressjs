@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const Category = require('../models/Category');
+
 const CustomError = require('../helpers/error/CustomError');
 const asyncErrorWrapper = require('express-async-handler');
 const {
@@ -152,7 +154,7 @@ const editPersonalInfo = asyncErrorWrapper(async (req, res, next) => {
 });
 
 const followUser = asyncErrorWrapper(async (req, res, next) => {
-  const userId = req.params.id; //istek yapılan kullanıcı
+  const userId = req.params.user_id; //istek yapılan kullanıcı
   const authId = req.user.id; //isteği yapan
 
   const user = await User.findById(userId);
