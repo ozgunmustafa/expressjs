@@ -71,10 +71,32 @@ const followCategory = asyncErrorWrapper(async (req, res, next) => {
     //data: post,
   });
 });
+
+const getFeaturedCategories = asyncErrorWrapper(async (req, res, next) => {
+  const featuredCategories = await Category.find({ isFeatured: true });
+
+  return res.status(200).json({
+    success: true,
+    data: featuredCategories,
+  });
+});
+const getPopularCategories = asyncErrorWrapper(async (req, res, next) => {
+  const popularCategories = await Category.find({
+    'posts.1': { $exists: true },
+  });
+
+  return res.status(200).json({
+    success: true,
+    data: popularCategories,
+    length: popularCategories.length,
+  });
+});
 module.exports = {
   createCategory,
   getSingleCategory,
   getAllCategories,
   getAllPostByCategory,
   followCategory,
+  getFeaturedCategories,
+  getPopularCategories,
 };

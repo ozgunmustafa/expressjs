@@ -30,5 +30,10 @@ router.post(
   [getAccessToRoute, profileImageUpload.single('profile_img')],
   imageUpload,
 );
+router.get('/getto', function (req, res, next) {
+  res.cookie('title', 'GeeksforGeeks');
+  res.send('Cookie Set');
+  next();
+});
 
 module.exports = router;

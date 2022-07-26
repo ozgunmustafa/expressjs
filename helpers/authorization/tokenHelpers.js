@@ -5,14 +5,15 @@ const sentJwtToClient = (user, res) => {
   return res
     .status(200)
     .cookie('access_token', token, {
-      httpOnly: true,
-      expires: new Date(Date.now() + parseInt(JWT_COOKIE) * 1000*60),
+      httpOnly: false,
+      expires: new Date(Date.now() + parseInt(JWT_COOKIE) * 15000 * 60),
       secure: NODE_ENV === 'development' ? false : true,
     })
     .json({
       success: true,
       access_token: token,
       data: {
+        id: user._id,
         name: user.name,
         email: user.email,
       },

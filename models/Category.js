@@ -12,6 +12,10 @@ const CategorySchema = new Schema({
   description: {
     type: String,
   },
+  isFeatured: {
+    type: Boolean,
+    default: true,
+  },
   slug: {
     type: String,
   },
@@ -28,9 +32,9 @@ const CategorySchema = new Schema({
   followers: [
     {
       type: mongoose.Schema.ObjectId,
-      ref:'User'
-    }
-  ]
+      ref: 'User',
+    },
+  ],
 });
 
 CategorySchema.pre('save', function (next) {

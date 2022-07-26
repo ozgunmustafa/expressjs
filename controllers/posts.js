@@ -4,7 +4,10 @@ const CustomError = require('../helpers/error/CustomError');
 const asyncErrorWrapper = require('express-async-handler');
 
 const getAllPost = asyncErrorWrapper(async (req, res, next) => {
-  const posts = await Post.find();
+  const posts = await Post.find().populate('category').populate({
+    path: 'user',
+    select: 'name profile_img',
+  });
 
   return res.status(200).json({
     success: true,
@@ -65,7 +68,6 @@ const likePost = asyncErrorWrapper(async (req, res, next) => {
   const { id } = req.params;
   const post = await Post.findById(id);
   const user = await User.findById(req.user.id);
-
 
   if (post.likes.includes(req.user.id)) {
     const postIndex = post.likes.indexOf(req.user.id);

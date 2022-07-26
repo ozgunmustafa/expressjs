@@ -8,7 +8,15 @@ const user = require('./user');
 const admin = require('./admin');
 
 const router = express.Router();
-router.use(cors({ credentials: 'same-origin' }));
+router.use(cors({ origin: '*', credentials: true }));
+router.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept',
+  );
+  next();
+});
 router.use(express.static('public'));
 
 router.use('/categories', categories);

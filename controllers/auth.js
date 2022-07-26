@@ -32,6 +32,7 @@ const login = asyncErrorWrapper(async (req, res, next) => {
   if (!decryptPassword(password, user.password)) {
     return next(new CustomError('Please check your credentials', 400));
   }
+  //console.log(user);
   sentJwtToClient(user, res);
 });
 
@@ -40,7 +41,7 @@ const logout = asyncErrorWrapper(async (req, res, next) => {
   return res
     .status(200)
     .cookie({
-      httpOnly: true,
+      httpOnly: false,
       expires: new Date(Date.now()),
       secure: NODE_ENV === 'development' ? false : true,
     })
